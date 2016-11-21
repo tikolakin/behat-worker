@@ -24,22 +24,28 @@ class FeatureScanner
      * @return array
      */
     private function findFeatures($dir, $prefix = '') {
-        $dir = rtrim($dir, '\\/');
-        $result = [];
 
-        foreach (scandir($dir) as $file) {
-            if ($file !== '.' && $file !== '..') {
-                if (is_dir("$dir/$file")) {
-                    $result = array_merge($result, $this->findFeatures("$dir/$file", "$prefix$file/"));
-                }
-                else {
-                    if (strpos($file, '.feature') > 0) {
-                        $result[] = $dir . '/' .$file;
+        function scan($dir, $prefix = '')
+        {
+            $dir = rtrim($dir, '\\/');
+            $result = [];
+
+            foreach (scandir($dir) as $file) {
+                if ($file !== '.' && $file !== '..') {
+                    if (is_dir("$dir/$file")) {
+                        $result = array_merge($result, scan("$dir/$file", "$prefix$file/"));
+                    }
+                    else {
+                        if (strpos($file, '.feature') !== false) {
+                            $result[] = $dir . '/' .$file;
+                        }
                     }
                 }
             }
+            return $result;
         }
-        //shuffle($result);
-        $this->features =  $result;
+        $features = scan($dir, $prefix = '');
+        shuffle($features);
+        $this->features = $features;
     }
 }

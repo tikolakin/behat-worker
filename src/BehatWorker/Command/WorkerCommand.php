@@ -51,7 +51,7 @@ class WorkerCommand extends Command
                     'arguments' => $input->getOption('tags'),
                     'config' => str_replace(
                         $input->getOption('output'),
-                        $input->getOption('output') . DIRECTORY_SEPARATOR . $name,
+                        rtrim($input->getOption('output'), '\\/') . DIRECTORY_SEPARATOR . $name,
                         getenv('BEHAT_PARAMS')
                     ),
                 ]
