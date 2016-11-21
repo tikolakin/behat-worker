@@ -25,10 +25,10 @@ class FeatureScanner
      */
     private function findFeatures($dir, $prefix = '') {
         $dir = rtrim($dir, '\\/');
-        $result = array();
+        $result = [];
 
         foreach (scandir($dir) as $file) {
-            if ($file !== '.' && $file !== '..' && $file !== 'bootstrap' && $file !== 'log') {
+            if ($file !== '.' && $file !== '..') {
                 if (is_dir("$dir/$file")) {
                     $result = array_merge($result, $this->findFeatures("$dir/$file", "$prefix$file/"));
                 }
